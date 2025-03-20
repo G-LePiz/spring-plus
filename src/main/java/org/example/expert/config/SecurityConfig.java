@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(request -> request.getRequestURI().startsWith("/auth")).permitAll()
                         .requestMatchers("/admin").hasAuthority(UserRole.Authority.ADMIN) // /admin인 url에서는 관리자 통과
-                        .requestMatchers("/open").permitAll()
+                        .requestMatchers("/*").permitAll()
                         .anyRequest().authenticated() // SecurityContext에 AbstractAuthenticationToken이 set 되어있으면 통과를 시킨다.
                 )
                 .build();

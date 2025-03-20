@@ -2,16 +2,19 @@ package org.example.expert.domain.todo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.expert.domain.common.annotation.Auth;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
+import org.example.expert.domain.todo.dto.response.TodoSerchResponse;
 import org.example.expert.domain.todo.service.TodoService;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,8 +42,15 @@ public class TodoController {
     public ResponseEntity<TodoResponse> getTodo(@PathVariable long todoId) {
         return ResponseEntity.ok(todoService.getTodo(todoId));
     }
-//
-//    @GetMapping("/todos/{todoId}")
-//    public ResponseEntity<TodoResponse> getTodo2(@PathVariable long todoId,
-//                                                 @RequestParam)
+
+    @GetMapping("/todos/search/{todoId}")
+    public ResponseEntity<Page<TodoSerchResponse>> getTodo2(@PathVariable long todoId,
+                                                            @RequestParam(name = "todoTitle",required = false) String todoTitle,
+                                                            @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                                            @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+                                                            @RequestParam(name = "nickname", required = false) String nickname,
+                                                            @RequestParam(name = "page", defaultValue = "1") int page,
+                                                            @RequestParam(name = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(todoService.serchAll(todoId, todoTitle, startDate, endDate, nickname, page, size));
+    }
 }
