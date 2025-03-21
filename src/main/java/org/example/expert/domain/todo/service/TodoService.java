@@ -28,12 +28,9 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
     private final WeatherClient weatherClient;
-    private final LogService logService;
 
     @Transactional
     public TodoSaveResponse saveTodo(AuthUser authUser, TodoSaveRequest todoSaveRequest) {
-
-        logService.saveLog();
 
         User user = User.fromAuthUser(authUser);
 
