@@ -29,9 +29,10 @@ public class User extends Timestamped {
         this.nickname = nickname;
     }
 
-    private User(Long id, String email, UserRole userRole) {
+    private User(Long id, String email, String nickname, UserRole userRole) {
         this.id = id;
         this.email = email;
+        this.nickname = nickname;
         this.userRole = userRole;
     }
 
@@ -40,7 +41,7 @@ public class User extends Timestamped {
                 .findFirst()
                 .orElseThrow(()-> new IllegalArgumentException("권한이 없습니다."))
                 .getAuthority());
-        return new User(authUser.getId(), authUser.getEmail(), userRole);
+        return new User(authUser.getId(), authUser.getEmail(), authUser.getNickname(), userRole);
     }
 
     public void changePassword(String password) {
